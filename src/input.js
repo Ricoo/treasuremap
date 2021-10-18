@@ -1,10 +1,11 @@
 import { Exception } from "./exception.js";
+import { MapBuilder } from "./map.js"
 
 class FileParser {
 
     constructor() {
         this.file = null
-        this.descstring = ""
+        this.descstring = []
     }
 
     getFile(f) {
@@ -25,25 +26,44 @@ class FileParser {
     }
 
     parseInput() {
-        /**
-         * TODO : parse file to generate a Map object, containing an array of tiles and the size of the map
-         */
          return new Promise((resolve, reject) => {
-            reject("test")
-            this.descstring.foreach((el) => {
-                switch (el[0]) {
-                    case '#':
-                        break;
-                    case 'A':
-                        break;
-                    case 'M':
-                        break;
-                    case 'C':
-                        break;
-                    case 'T':
-                        break;
-                }
-            })
+            let map = new MapBuilder()
+            try {
+                this.descstring = this.descstring.reduce((acc, el) => {
+                    if (el[0] == 'C') {
+                        return [el, ...acc]
+                    }
+                    return [...acc, el]
+                }, [])
+                console.log(this.descstring)
+                this.descstring.forEach((el) => {
+                    let tmp = el.split(' - ')
+                    let arg = tmp.slice(1, tmp.length)
+                    console.log(arg)
+                    console.log(el)
+                    switch (el[0]) {
+                        case 'C':
+                            map.defineSize(arg)
+                            break
+                        case 'M':
+                            map.addMountain(arg)
+                            break
+                        case 'T':
+                            map.addTreasures(arg)
+                            break
+                        case 'A':
+                            map.addAdventurer(arg)
+                            break
+                        case '#':
+                            break
+                        default:
+                            reject("Invalid starting character: " + el[0])
+                        }
+                })    
+            } catch (e) {
+                reject(e)
+            }
+            resolve(map)
         })
     }
 }

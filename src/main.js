@@ -28,8 +28,8 @@ window.onload = () => {
         )
         .then(
             (map) => {
-                display.show(map)
-                result = new Blob(map.serialize(), {type: "text/play;charset=utf-8"})
+                // display.show(map)
+                result = new Blob([map.serialize()], {type: "text/plain;charset=utf-8"})
                 let a = document.createElement("a")
                 a.href = URL.createObjectURL(result)
                 a.download = "result.txt"
