@@ -1,15 +1,16 @@
-import { Exception } from "./exception"
-import { FileParser } from "./input"
+import { Exception } from "./exception.js"
+import { FileParser } from "./input.js"
+import { MapProcessor } from "./calculation.js"
+import { MapDisplay } from "./display.js"
 
 window.onload = () => {
-    sendButton = document.getElementById("sendButton")
-    fileInput = document.getElementById("fileInput")
-    resultDisplay = document.getElementById("resultDisplay")
+    let sendButton = document.getElementById("sendButton")
+    let fileInput = document.getElementById("fileInput")
 
     sendButton.onclick = () => {
-        parser = new FileParser()
-        calc = new MapProcessor()
-        display = new MapDisplay(resultDisplay)
+        let parser = new FileParser()
+        let calc = new MapProcessor()
+        let result
 
         parser.getFile(fileInput.files[0])
         .then(
@@ -17,16 +18,27 @@ window.onload = () => {
             (err) => {
                 Exception.exceptionHandler(err)
                 throw new Error(err)
-            })
+            }
+        )
         .then(
             (map) => calc.processMap(map),
             (err) => {
                 Exception.exceptionHandler("Error while reading map: " + err)
             }
-        ).then(
+        )
+        .then(
             (map) => {
                 display.show(map)
-                output.apply(map.serialize())
+                result = new Blob(map.serialize(), {type: "text/play;charset=utf-8"})
+                let a = document.createElement("a")
+                a.href = URL.createObjectURL(result)
+                a.download = "result.txt"
+                document.body.appendChild(a)
+                a.click()
+                setTimeout(()=>{
+                    window.URL.revokeObjectURL(a.href)
+                    document.body.removeChild(a)
+                }, 1)
             },
             (err) => {
                 Exception.exceptionHandler(err)
