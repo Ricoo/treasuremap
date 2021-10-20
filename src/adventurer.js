@@ -7,6 +7,7 @@ class Adventurer {
         this.seq = sequence
         this.treasures = 0
         this.isActive = true
+        this.moved = false
     }
 
     addTreasure() {
@@ -36,25 +37,25 @@ class Adventurer {
                 'move': [-1, 0]
             }
         }
-        if (this.seq.length <= 0) {
-            this.isActive = false
-            return [this.x, this.y]
-        }
         // action = sequence.shift()
         let action = this.seq.charAt(0)
         this.seq = this.seq.substr(1)
+        if (this.seq.length <= 0) {
+            this.isActive = false
+            // return [this.x, this.y]
+        }
+        this.moved = false
         switch (action) {
             case 'A':
                 let [x, y] = rotCycle[this.rotation]['move']
                 if (map.canMove([this.x + x, this.y + y])) {
+                    this.moved = true
                     this.x = this.x + x
                     this.y = this.y + y
                 }
                 break
             case 'D':
-                console.log(this.rotation)
                 this.rotation = rotCycle[this.rotation]['D']
-                console.log(this.rotation)
                 break
             case 'G':
                 this.rotation = rotCycle[this.rotation]['G']

@@ -1,7 +1,6 @@
 import { Exception } from "./exception.js"
 import { FileParser } from "./input.js"
 import { MapProcessor } from "./calculation.js"
-import { MapDisplay } from "./display.js"
 
 window.onload = () => {
     let sendButton = document.getElementById("sendButton")

@@ -1,8 +1,4 @@
 class MapProcessor {
-    constructor() {
-
-    }
-
     processMap(map) {
         return new Promise((resolve, reject) => {
             map.doSteps()

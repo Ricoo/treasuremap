@@ -19,7 +19,6 @@ class MapBuilder {
 
     addTreasures(arg) {
         let [x, y, amount] = arg.map(Number)
-        console.log(this.map)
         this.map[x][y] = Number(amount)
     }
 
@@ -31,11 +30,16 @@ class MapBuilder {
     doSteps() {
         while (this.advlist.find((adv) => adv.isActive)) {
             this.advlist.forEach((adv)=>{
+                if (!adv.isActive) {
+                    return
+                }
                 let [x, y] = adv.doStep(this)
                 if (typeof this.map[x][y] == 'number' &&
-                    this.map[x][y] > 0) {
+                    this.map[x][y] > 0 &&
+                    adv.moved) {
                     adv.addTreasure()
-                    this.map[x][y]
+                    console.log(adv.treasures)
+                    this.map[x][y]--
                 }
             })    
         }
@@ -67,7 +71,6 @@ class MapBuilder {
         this.advlist.forEach((a) => {
             res.push(`A - ${a.name} - ${a.x} - ${a.y} - ${a.rotation} - ${a.treasures}`)
         })
-        console.log(res.join('\n'))
         return res.join('\n')
     }
 }

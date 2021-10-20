@@ -1,4 +1,3 @@
-import { Exception } from "./exception.js";
 import { MapBuilder } from "./map.js"
 
 class FileParser {
@@ -13,14 +12,19 @@ class FileParser {
             if (!f) {
                 reject("No file provided")
             }
-            let reader = new FileReader();
+            let reader = new FileReader()
+
             reader.addEventListener('error', () => {
                 reject("Error while reading file")
             })
-            reader.onload = (element) => {
-                this.descstring = element.target.result.split(/\r?\n/)
+
+            reader.onload = () => {
+
+                this.descstring = reader.result.toString().split(/\r?\n/)
+
                 resolve()
             }
+            
             reader.readAsText(f)
         })
     }
@@ -35,12 +39,9 @@ class FileParser {
                     }
                     return [...acc, el]
                 }, [])
-                console.log(this.descstring)
                 this.descstring.forEach((el) => {
                     let tmp = el.split(' - ')
                     let arg = tmp.slice(1, tmp.length)
-                    console.log(arg)
-                    console.log(el)
                     switch (el[0]) {
                         case 'C':
                             map.defineSize(arg)
