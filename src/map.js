@@ -61,10 +61,10 @@ class MapBuilder {
         this.map.forEach((el, x) => {
             el.forEach((el, y) => {
                 if (typeof el == "number") {
-                    res.push(`T - ${this.x} - ${this.y} - ${el}`)
+                    res.push(`T - ${x} - ${y} - ${el}`)
                 }
                 if (el == 'M') {
-                    res.push(`M - ${this.x} - ${this.y}`)
+                    res.push(`M - ${x} - ${y}`)
                 }
             })
         });
