@@ -34,6 +34,7 @@ describe("adventurer test", () => {
             expect(adv.x).toBe(1)
             expect(adv.y).toBe(0)    
         })
+        await flushPromises()
     })
 
     test("adventurer obstacle test", async () => {

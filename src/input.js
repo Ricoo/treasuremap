@@ -14,17 +14,16 @@ class FileParser {
             }
             let reader = new FileReader()
 
+            reader.addEventListener('load',  () => {
+                this.descstring = reader.result.toString().split(/\r?\n/)
+
+                resolve()
+            })
+
             reader.addEventListener('error', () => {
                 reject("Error while reading file")
             })
 
-            reader.onload = () => {
-
-                this.descstring = reader.result.toString().split(/\r?\n/)
-
-                resolve()
-            }
-            
             reader.readAsText(f)
         })
     }
