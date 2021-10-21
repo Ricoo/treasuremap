@@ -38,7 +38,6 @@ class MapBuilder {
                     this.map[x][y] > 0 &&
                     adv.moved) {
                     adv.addTreasure()
-                    console.log(adv.treasures)
                     this.map[x][y]--
                 }
             })    
